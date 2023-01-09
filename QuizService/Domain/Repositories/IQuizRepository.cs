@@ -17,4 +17,6 @@ public interface IQuizRepository
     /// </summary>
     /// <throws>QuizNotFoundException</throws>
     public Task<Quiz> PersistUpdate(Quiz updatedQuiz);
+
+    Task<List<Quiz>> ListAll();
 }

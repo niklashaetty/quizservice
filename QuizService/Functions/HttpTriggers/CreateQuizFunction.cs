@@ -4,9 +4,6 @@ using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Api;
-using Domain;
-using Domain.Models;
-using Domain.Repositories;
 using Domain.Services.QuizCreationService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +11,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Functions.HttpTriggers;
@@ -30,7 +26,8 @@ public class CreateQuizFunction
     }
 
     [OpenApiOperation(operationId: "CreateQuiz", tags: new[] {"Quiz"}, Summary = "Creates a new empty quiz")]
-    [OpenApiResponseWithBody(HttpStatusCode.Created, MediaTypeNames.Application.Json, typeof(CreateQuizResponse))]
+    [OpenApiRequestBody(MediaTypeNames.Application.Json, typeof(CreateQuizRequest))]
+    [OpenApiResponseWithBody(HttpStatusCode.Created, MediaTypeNames.Application.Json, typeof(SimpleQuizResponse))]
     [OpenApiResponseWithBody(HttpStatusCode.BadRequest, MediaTypeNames.Application.Json, typeof(ErrorResponse),
         Summary = "Invalid request")]
     [FunctionName("CreateQuizFunction")]
@@ -40,7 +37,10 @@ public class CreateQuizFunction
         ILogger log)
     {
         log.LogInformation("Creating a new quiz");
-        var quiz = await _quizCreationService.Create();
-        return new CreatedResult($"/api/quizzes/{quiz.QuizId}", new CreateQuizResponse(quiz.QuizId));
+        var body = await new StreamReader(req.Body).ReadToEndAsync();
+        var createQuizRequest = JsonConvert.DeserializeObject<CreateQuizRequest>(body);
+        
+        var quiz = await _quizCreationService.Create(createQuizRequest?.QuizName);
+        return new CreatedResult($"/api/quizzes/{quiz.QuizId}", new SimpleQuizResponse(quiz.QuizId, quiz.QuizName));
     }
 }

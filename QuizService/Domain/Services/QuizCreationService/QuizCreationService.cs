@@ -13,9 +13,9 @@ public class QuizCreationService : IQuizCreationService
         _quizRepository = quizRepository;
     }
 
-    public async Task<Quiz> Create()
+    public async Task<Quiz> Create(string quizName)
     {
-        var newQuiz = Quiz.Create();
+        var newQuiz = Quiz.Create(quizName);
         return await _quizRepository.Add(newQuiz);
     }
 }

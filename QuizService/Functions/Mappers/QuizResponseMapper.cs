@@ -7,11 +7,19 @@ namespace Functions.Mappers;
 
 public static class QuizResponseMapper
 {
-    public static QuizResponse ToQuizResponse(Quiz quiz)
+    public static List<SimpleQuizResponse> ToSimpleQuizResponse(List<Quiz> quizzes)
     {
-        var response = new QuizResponse();
-        response.QuizId = quiz.QuizId;
-        response.AlternativeQuestions = new List<AlternativeQuestionResponse>();
+        return quizzes.Select(q => new SimpleQuizResponse(q.QuizId, q.QuizName)).ToList();
+    }
+
+    public static DetailedQuizResponse ToDetailedQuizResponse(Quiz quiz)
+    {
+        var response = new DetailedQuizResponse
+        {
+            QuizId = quiz.QuizId,
+            QuizName = quiz.QuizName,
+            AlternativeQuestions = new List<AlternativeQuestionResponse>()
+        };
 
         foreach (var qDto in quiz.AlternativeQuestions.Select(q => new AlternativeQuestionResponse()
                  {

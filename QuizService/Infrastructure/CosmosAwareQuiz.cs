@@ -1,4 +1,3 @@
-using Domain;
 using Domain.Models;
 using Newtonsoft.Json;
 
@@ -12,13 +11,13 @@ public class CosmosAwareQuiz : Quiz
     [JsonProperty(PropertyName = "id")] 
     public string Id { get; set; } 
     
-    public CosmosAwareQuiz(Guid quizId, List<AlternativeQuestion> questions) : base(quizId, questions)
+    public CosmosAwareQuiz(Guid quizId, string quizName, List<AlternativeQuestion> questions) : base(quizId, quizName, questions)
     {
         Id = QuizId.ToString();
     }
 
     public static CosmosAwareQuiz ToCosmosAware(Quiz quiz)
     {
-        return new CosmosAwareQuiz(quiz.QuizId, quiz.AlternativeQuestions);
+        return new CosmosAwareQuiz(quiz.QuizId, quiz.QuizName, quiz.AlternativeQuestions);
     }
 }

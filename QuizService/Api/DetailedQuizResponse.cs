@@ -1,14 +1,17 @@
-using Api.Enums;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Newtonsoft.Json;
 
 namespace Api;
 
-public class QuizResponse
+public class DetailedQuizResponse
 {
     [JsonRequired]
     [OpenApiProperty(Description = "The quiz identifier")]
     public Guid QuizId { get; set; }
+    
+    [JsonRequired]
+    [OpenApiProperty(Description = "The name of the quiz")]
+    public string QuizName { get; set; }
     
     [JsonRequired]
     [OpenApiProperty(Description = "The questions with alternative answer. At least one answer must be correct")]

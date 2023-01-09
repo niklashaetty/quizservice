@@ -36,6 +36,11 @@ public class InMemoryQuizRepository : IQuizRepository
         Quizzes[updatedQuiz.QuizId] = new TestableQuiz(updatedQuiz);
         return Task.FromResult(Quizzes[updatedQuiz.QuizId].Deserialize());
     }
+
+    public Task<List<Quiz>> ListAll()
+    {
+        return Task.FromResult(Quizzes.Values.Select(q => q.Deserialize()).ToList());
+    }
 }
 
 internal class TestableQuiz

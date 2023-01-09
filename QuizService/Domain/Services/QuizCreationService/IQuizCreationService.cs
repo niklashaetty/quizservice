@@ -4,5 +4,5 @@ namespace Domain.Services.QuizCreationService;
 
 public interface IQuizCreationService
 {
-    public Task<Quiz> Create();
+    public Task<Quiz> Create(string quizName);
 }

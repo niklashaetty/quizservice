@@ -33,7 +33,7 @@ public class GetQuizFunction
     }
 
     [OpenApiOperation(operationId: "GetQuiz", tags: new[] {"Quiz"}, Summary = "Get an existing quiz")]
-    [OpenApiResponseWithBody(HttpStatusCode.OK, MediaTypeNames.Application.Json, typeof(QuizResponse))]
+    [OpenApiResponseWithBody(HttpStatusCode.OK, MediaTypeNames.Application.Json, typeof(DetailedQuizResponse))]
     [OpenApiResponseWithBody(HttpStatusCode.BadRequest, MediaTypeNames.Application.Json, typeof(ErrorResponse),
         Summary = "Invalid request")]
     [OpenApiResponseWithBody(HttpStatusCode.NotFound, MediaTypeNames.Application.Json, typeof(ErrorResponse),
@@ -49,7 +49,7 @@ public class GetQuizFunction
         try
         {
             var quiz = await _quizRepository.Get(quizId);
-            return new OkObjectResult(QuizResponseMapper.ToQuizResponse(quiz));
+            return new OkObjectResult(QuizResponseMapper.ToDetailedQuizResponse(quiz));
         }
         catch (QuizNotFoundException e)
         {

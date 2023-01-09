@@ -17,6 +17,7 @@ curl --location --request POST 'https://func-quizservice.azurewebsites.net/api/q
 ```
 
 ## Functionality, examples
+**Note: There is only an in memory database implementation. If the function is restarted, the database will be wiped.**
 
 ### Creating a new empty quiz
 Send a http request: POST https://func-quizservice.azurewebsites.net/api/quizzes
